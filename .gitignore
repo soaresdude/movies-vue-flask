@@ -1,0 +1,9 @@
+**/*.vscode
+**/*.idea
+**/*__init__.py
+**/*__pycache__
+**/*npm-debug.log*
+**/*yarn-debug.log*
+**/*yarn-error.log*
+**/*node_modules
+**/*dist/
