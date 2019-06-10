@@ -40,4 +40,4 @@ To start the API in development mode, run the following commnd inside the `backe
 
 ### Extras ###
 
-You can find the Swagger documentation for the API accessing the followeing address http://localhost:5000
+You can find the Swagger documentation for the API accessing the following address http://localhost:5000
