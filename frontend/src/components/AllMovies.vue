@@ -65,6 +65,7 @@ export default {
   },
   created () {
     if (!this.allMovies) this.$store.dispatch('getAllMovies', { page: this.page })
+    if (this.pageNumber) this.page = this.pageNumber
   },
   computed: {
     loading () {
@@ -75,11 +76,15 @@ export default {
     },
     imdbInfo () {
       return this.$store.state.movies.imdbInfo
+    },
+    pageNumber () {
+      return this.$store.state.page
     }
   },
   methods: {
     changePage (page) {
       this.$store.dispatch('getAllMovies', { page })
+      this.$store.dispatch('storePageNumber', page)
     },
     loadImdbInfo (movie) {
       Promise.all([this.$store.dispatch('getMovieById', movie.id),
