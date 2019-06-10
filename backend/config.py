@@ -1,8 +1,8 @@
 import os
 
 postgres_local_base = os.getenv(
-    'DATABASE_URI',
-    'postgresql+psycopg2://movies_user:12345678@localhost:5432/movies_db'
+    "DATABASE_URI",
+    "postgresql+psycopg2://movies_user:12345678@localhost:5432/movies_db",
 )
 
 
@@ -21,7 +21,4 @@ class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = postgres_local_base
 
 
-config_by_name = dict(
-    development=DevelopmentConfig,
-    production=ProductionConfig
-)
+config_by_name = dict(development=DevelopmentConfig, production=ProductionConfig)

@@ -14,9 +14,8 @@ export default new Router({
       component: Dashboard
     },
     {
-      path: '/movie/:id',
+      path: '/movie',
       name: 'SelectedMovie',
-      props: true,
       component: SelectedMovie
     }
   ]

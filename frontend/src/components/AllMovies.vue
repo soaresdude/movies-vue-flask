@@ -29,7 +29,6 @@
           <v-card-title primary-title>
             <div>
               <h2>{{movie.movie_title}}</h2>
-              <div>Title: {{movie.imdbID}}</div>
               <div>Year: {{movie.title_year}}</div>
               <div>Type: {{movie.genres.split('|').join(', ')}}</div>
             </div>
@@ -38,12 +37,8 @@
           <v-card-actions class="justify-center">
             <v-btn flat
                    color="green"
-                   @click="movieDetails = true"
-            >View
-            </v-btn>
-            <v-dialog v-model="movieDetails" max-width="600px">
-              <selected-movie :selected-movie="movie" @close="movieDetails = false"/>
-            </v-dialog>
+                   @click="loadImdbInfo(movie)">
+              View</v-btn>
           </v-card-actions>
 
         </v-card>
@@ -60,18 +55,13 @@
 </template>
 
 <script>
-import SelectedMovie from './SelectedMovie'
 
 export default {
   name: 'AllMovies',
   data () {
     return {
-      page: 1,
-      movieDetails: false
+      page: 1
     }
-  },
-  components: {
-    SelectedMovie
   },
   created () {
     if (!this.allMovies) this.$store.dispatch('getAllMovies', { page: this.page })
@@ -82,11 +72,21 @@ export default {
     },
     allMovies () {
       return this.$store.state.movies.allMovies
+    },
+    imdbInfo () {
+      return this.$store.state.movies.imdbInfo
     }
   },
   methods: {
     changePage (page) {
       this.$store.dispatch('getAllMovies', { page })
+    },
+    loadImdbInfo (movie) {
+      Promise.all([this.$store.dispatch('getMovieById', movie.id),
+        this.$store.dispatch('getImdbInfo', { title: movie.movie_title, year: movie.title_year })])
+        .then(() => {
+          this.$router.push('/movie')
+        })
     }
   }
 }

@@ -1,4 +1,4 @@
-# sympla-challenge-frontend
+# Movies info with Flask and Vue
 
 ## Project setup
 ```

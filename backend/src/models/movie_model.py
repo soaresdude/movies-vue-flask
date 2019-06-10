@@ -3,7 +3,7 @@ from typing import List
 
 
 class MovieModel(db.Model):
-    __tablename__ = 'movies'
+    __tablename__ = "movies"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     color = db.Column(db.String(16))
@@ -36,17 +36,17 @@ class MovieModel(db.Model):
     movie_facebook_likes = db.Column(db.Integer, nullable=False)
 
     @classmethod
-    def get_all(cls, page=1):
-        return cls.query.paginate(page, 50, False).items
+    def get_all(cls, page):
+        return cls.query.paginate(int(page), 50, False).items
 
     @classmethod
-    def get_by(cls, page=1, **kwargs) -> List['MovieModel']:
-        print('query: ', kwargs)
-        return cls.query.filter_by(**kwargs).paginate(page, 50, False).items
+    def get_by(cls, page=1, **kwargs) -> List["MovieModel"]:
+        print("query: ", kwargs)
+        return cls.query.filter_by(**kwargs).paginate(int(page), 50, False).items
 
     @classmethod
-    def get_one(cls, query) -> 'MovieModel':
-        return cls.query.filter_by(query).first()
+    def get_one(cls, movie_id) -> "MovieModel":
+        return cls.query.get(movie_id)
 
     def __repr__(self):
-        return f'<Movie {self.movie_title}>'
+        return f"<Movie {self.movie_title}>"
