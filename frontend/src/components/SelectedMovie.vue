@@ -69,7 +69,6 @@
                           <td align="center">
                             <v-rating :half-increments="true" :value="rating.Value | filterRating"></v-rating>
                           </td>
-                          {{rating.Value | filterRating}}
                         </tr>
                       </table>
                     </v-card-text>
