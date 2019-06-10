@@ -17,5 +17,10 @@ export default {
     return axios.get(omdbUrl, { params: { t: params.title, y: params.year } })
       .then(response => Promise.resolve(response.data))
       .catch(error => Promise.reject(error))
+  },
+  fetchMovieNames () {
+    return axios.get('/movies/names')
+      .then(response => Promise.resolve(response.data))
+      .catch(error => Promise.reject(error))
   }
 }

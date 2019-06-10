@@ -14,7 +14,7 @@
   <v-container v-else grid-list-xl>
 
     <div class="text-xs-center">
-      <v-pagination
+      <v-pagination v-if="allMovies.length > 20"
         v-model="page"
         :length="101"
         @input="changePage(page)"/>
@@ -45,7 +45,7 @@
       </v-flex>
     </v-layout>
     <div class="text-xs-center">
-      <v-pagination
+      <v-pagination v-if="allMovies.length > 20"
         v-model="page"
         :length="101"
         @input="changePage(page)"/>

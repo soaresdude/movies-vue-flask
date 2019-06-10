@@ -11,17 +11,17 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-flex xs12 sm6 md3>
-        <v-text-field
-          label='Movie Name'
-          v-model='searchString'
-        >
-        </v-text-field>
+        <v-autocomplete v-model="searchString"
+          @update:searchInput="inspectString"
+          :items="movieNames"
+          color="green"
+          label="Movie Name">
+        </v-autocomplete>
       </v-flex>
       <v-btn
         flat
         :disabled="!dataAvailable"
-        @click="searchMovie"
-      >
+        @click="searchMovie">
         <span class="mr-2">Search</span>
       </v-btn>
     </v-toolbar>
@@ -38,18 +38,32 @@ export default {
   name: 'App',
   data () {
     return {
-      searchString: ''
+      searchString: '',
+      searchLength: 0,
+      hasSearched: false
     }
+  },
+  created () {
+    this.$store.dispatch('getMoviesNames')
   },
   computed: {
     dataAvailable () {
       return this.searchString !== null && this.searchString !== ''
+    },
+    movieNames () {
+      return this.$store.state.movies.movieNames
     }
   },
   methods: {
     searchMovie () {
-      this.$router.push('/search/' + this.searchString)
-      this.searchString = ''
+      this.$store.dispatch('getAllMovies', { filter: { movie_title: this.searchString } })
+      this.hasSearched = true
+    },
+    inspectString (value) {
+      if (value === '' && this.hasSearched) {
+        this.$store.dispatch('getAllMovies')
+        this.hasSearched = false
+      }
     }
   }
 }

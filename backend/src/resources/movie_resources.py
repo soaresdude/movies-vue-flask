@@ -2,7 +2,7 @@ from flask_restplus import Resource
 from flask import request
 from src.models.movie_model import MovieModel
 from src.schemas.movie_schema import MovieSchema
-from src.api import api
+import ast
 
 movie_schema = MovieSchema()
 movie_list_schema = MovieSchema(many=True)
@@ -10,7 +10,6 @@ movie_list_schema = MovieSchema(many=True)
 
 class MovieResource(Resource):
     @staticmethod
-    @api.doc(params={"id": "Movie Id"})
     def get(movie_id):
         return {"movie": movie_schema.dump(MovieModel.get_one(movie_id))}, 200
 
@@ -19,15 +18,29 @@ class MoviesListResource(Resource):
     @staticmethod
     def get():
         query = dict(request.args)
+
         if query.get("filter"):
-            return (
-                {
-                    "movies": movie_list_schema.dump(
-                        MovieModel.get_by(query.get("page"), **query.get("filter"))
-                    )
-                },
-                200,
-            )
+            filter_query = ast.literal_eval(query.get("filter"))
+            if filter_query.get("movie_title"):
+                return (
+                    {
+                        "movies": movie_list_schema.dump(
+                            MovieModel.get_by_title(
+                                title=filter_query.get("movie_title")
+                            )
+                        )
+                    },
+                    200,
+                )
+            elif filter_query:
+                return (
+                    {
+                        "movies": movie_list_schema.dump(
+                            MovieModel.get_by(query.get("page"), **filter_query)
+                        )
+                    },
+                    200,
+                )
         return (
             {
                 "movies": movie_list_schema.dump(
@@ -36,3 +49,9 @@ class MoviesListResource(Resource):
             },
             200,
         )
+
+
+class MoviesNamesResource(Resource):
+    @staticmethod
+    def get():
+        return {"names": MovieModel.get_movies_names()}, 200

@@ -5,7 +5,8 @@ const state = {
   loading: false,
   imdbInfo: null,
   error: null,
-  selectedMovie: null
+  selectedMovie: null,
+  movieNames: null
 }
 
 const mutations = {
@@ -42,6 +43,18 @@ const mutations = {
     state.loading = false
   },
   GET_MOVIE_PENDING (state) {
+    state.loading = true
+  },
+
+  GET_MOVIES_NAMES_SUCCESS (state, { result }) {
+    state.movieNames = result.names
+    state.loading = false
+  },
+  GET_MOVIES_NAMES_FAILED (state, { error }) {
+    state.error = error
+    state.loading = false
+  },
+  GET_MOVIES_NAMES_PENDING (state) {
     state.loading = true
   }
 }
@@ -81,6 +94,18 @@ const actions = {
       })
       .catch(error => {
         commit('GET_IMDB_INFO_FAILED', { error })
+      })
+  },
+  getMoviesNames ({ commit }) {
+    commit('GET_MOVIES_NAMES_PENDING')
+    moviesApi.fetchMovieNames()
+      .then(result => {
+        const { error } = result
+        if (error) commit('GET_MOVIES_NAMES_FAILED', { error })
+        else commit('GET_MOVIES_NAMES_SUCCESS', { result })
+      })
+      .catch(error => {
+        commit('GET_MOVIES_NAMES_FAILED', { error })
       })
   }
 }

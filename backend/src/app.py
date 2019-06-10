@@ -1,7 +1,11 @@
 import os
 from flask import Flask
 from flask_cors import CORS
-from src.resources.movie_resources import MovieResource, MoviesListResource
+from src.resources.movie_resources import (
+    MovieResource,
+    MoviesListResource,
+    MoviesNamesResource,
+)
 from src.db import db
 from src.api import api
 from src.ma import ma
@@ -24,5 +28,5 @@ def hello_world():
 
 
 api.add_resource(MovieResource, "/movie/<int:movie_id>", endpoint="movie_endpoint")
-
 api.add_resource(MoviesListResource, "/movies", endpoint="movies_endpoint")
+api.add_resource(MoviesNamesResource, "/movies/names", endpoint="movies_names_endpoint")

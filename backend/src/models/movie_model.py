@@ -1,5 +1,5 @@
-from src.db import db
 from typing import List
+from src.db import db
 
 
 class MovieModel(db.Model):
@@ -41,12 +41,19 @@ class MovieModel(db.Model):
 
     @classmethod
     def get_by(cls, page=1, **kwargs) -> List["MovieModel"]:
-        print("query: ", kwargs)
-        return cls.query.filter_by(**kwargs).paginate(int(page), 50, False).items
+        return cls.query.filter_by(**kwargs).paginate(page, 50, False).items
+
+    @classmethod
+    def get_by_title(cls, title):
+        return cls.query.filter(cls.movie_title.ilike(f"%{title}%"))
 
     @classmethod
     def get_one(cls, movie_id) -> "MovieModel":
         return cls.query.get(movie_id)
+
+    @classmethod
+    def get_movies_names(cls) -> List["MovieModel"]:
+        return [title[0] for title in db.session.query(cls.movie_title)]
 
     def __repr__(self):
         return f"<Movie {self.movie_title}>"
