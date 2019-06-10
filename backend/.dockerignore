@@ -1,0 +1,6 @@
+Dockerfile
+.git
+.idea
+*__init__.py
+*__pycache__
+docker-compose.override.yml
