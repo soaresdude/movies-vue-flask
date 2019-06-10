@@ -44,7 +44,7 @@ class MovieModel(db.Model):
         return cls.query.filter_by(**kwargs).paginate(page, 50, False).items
 
     @classmethod
-    def get_by_title(cls, title):
+    def get_by_title(cls, title) -> List['MovieModel']:
         return cls.query.filter(cls.movie_title.ilike(f"%{title}%"))
 
     @classmethod

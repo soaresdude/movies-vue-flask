@@ -1,11 +1,12 @@
 from flask_restplus import Resource
 from flask import request
 from src.models.movie_model import MovieModel
-from src.schemas.movie_schema import MovieSchema
+from src.schemas.movie_schema import MovieSchema, MoviesListSchema
 import ast
 
 movie_schema = MovieSchema()
 movie_list_schema = MovieSchema(many=True)
+all_movies_schema = MoviesListSchema(many=True)
 
 
 class MovieResource(Resource):
@@ -43,7 +44,7 @@ class MoviesListResource(Resource):
                 )
         return (
             {
-                "movies": movie_list_schema.dump(
+                "movies": all_movies_schema.dump(
                     MovieModel.get_all(query.get("page", 1))
                 )
             },

@@ -3,10 +3,16 @@ from src.ma import ma
 from src.models.movie_model import MovieModel
 
 
-class MovieSchema(ma.ModelSchema):
+class MoviesListSchema(ma.ModelSchema):
     imdb_score = fields.Decimal()
     aspect_ratio = fields.Decimal()
 
+    class Meta:
+        model = MovieModel
+        fields = ('id', 'title_year', 'genres', 'movie_title')
+
+
+class MovieSchema(ma.ModelSchema):
     class Meta:
         model = MovieModel
         fields = (
